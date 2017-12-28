@@ -35,7 +35,7 @@ GMKR &  0.00033 & 0.015 & 0.323 & 0.308 & 0.375 &     1 & 0.218 & 0.208 & 0.256 
     \end{adjustbox}
 \end{table}
 
-\imgh[p]{images/Histogram.pdf}{width=\textwidth}{Гистограммы лог-доходностей активов портфеля}{hist}
+\imgh[p]{Histogram.pdf}{width=\textwidth}{Гистограммы лог-доходностей активов портфеля}{hist}
 
 \subsection{Результаты оценки параметров распределений}
 \label{calibration:marginals}
@@ -116,11 +116,19 @@ GMKR &  0.00033 & 0.015 & 0.323 & 0.308 & 0.375 &     1 & 0.218 & 0.208 & 0.256 
 \end{tabular}
 \end{table}
 
-\imgh[p]{images/BestMargins.pdf}{height=0.95\textheight}{Результаты фитинга распределений и тестов}{bestmargins}
+\imgh[p]{BestMargins.pdf}{height=0.95\textheight}{Результаты фитинга распределений и тестов}{bestmargins}
 
 \subsection{Результаты оценки параметров копул}
 
-\imgh[thb]{images/pobs.png}{width=\textwidth}{Парные графики наблюдений (слева) и псевдо-наблюдений (справа)}{pobs}
+\begin{figure}[thb]
+  \centering
+  \includegraphics[width=0.49\textwidth]{ObservedData.pdf}
+  \includegraphics[width=0.49\textwidth]{PseudoObs.pdf}
+  \caption{Парные графики наблюдений (слева) и псевдо-наблюдений (справа)}
+  \label{ris:pobs}
+\end{figure}
+
+%\imgh[thb]{pobs.png}{width=\textwidth}{Парные графики наблюдений (слева) и псевдо-наблюдений (справа)}{pobs}
 
 Операция преобразования лог-доходностей в псевдо-наблюдения описана уравнением~(\ref{pobs}).
 Графики парных совместных распределений реальных наблюдений и полученных псевдо-наблюдений изображены на рис.~\ref{ris:pobs}.
