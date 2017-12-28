@@ -92,10 +92,10 @@ K_1(\zeta) }e^{-\zeta \left[ \sqrt{1+\pi^2}
 
 На данном этапе необходимо сконструировать копулу, используя два вида копулярных моделей: обычную многомерную и регулярную вайн-копулу. 
 Сначала необходимо исходные лог-доходности портфеля перевести в пространство области определения копулы, то есть в единичный гиперкуб: $\mathbb{R}^d \to [0, 1]^d$. Тем самым мы получаем эмпирическую копулу -- т.~н. \boldit{псевдо-наблюдения}. 
-Пусть из уравнения (\ref{log-returns}) мы имеем ряд лог-доходностей $\boldsymbol{r}_i = (r_{1,i}, \ldots, r_{T,i})^\intercal$ для всех исторических наблюдений каждого актива $i \in \overline{1,d}$, тогда псевдо-наблюдения будут определяться из следующей формулы:
+Пусть из уравнения (\ref{log-returns}) мы имеем ряд лог-доходностей $\boldsymbol{r}_i = (r_{1,i}, \ldots, r_{T,i})^\intercal$ для всех исторических наблюдений каждого актива $i \in \overline{1, d}$, тогда псевдо-наблюдения будут определяться из следующей формулы:
 %
 \begin{equation} \label{pobs}
-    u_{t,i} = \frac{\text{rg}(r_{t,i})}{T + 1},\ \forall \ t \in \overline{1,T},\ i \in \overline{1,d},
+    u_{t,i} = \frac{\text{rg}(r_{t,i})}{T + 1}, \ \forall \ t \in \overline{1, T},\ i \in \overline{1, d},
 \end{equation}
 
 \noindent где $\text{rg}(r_{t,i})$ -- ранг $r_{t,i}$ (от наименьшего к наибольшему) по отношению к наблюдаемым значениям $r_{\tau,i}, \tau \in \overline{1,T}$ \cite{Copula}. Каждое псевдо-наблюдение $u_{t,i}$ находится между 0~и~1.
@@ -105,18 +105,26 @@ K_1(\zeta) }e^{-\zeta \left[ \sqrt{1+\pi^2}
 \begin{enumerate}[(1)]
 \item $d$-мерная копула $C$ называется \textit{эллиптической}, если функция её распределения удовлетворяет уравнению:
 \begin{equation} \label{EllipCop}
-    C(u_1, u_2, \ldots,u_d|\theta) = F_d(F^{-1}(u_1|\theta),F^{-1}(u_2|\theta), \ldots,F^{-1}(u_d|\theta)|\theta),
+    C(u_1, u_2, \ldots,u_d|\theta) = F_d(F^{-1}(u_1|\theta), F^{-1}(u_2|\theta), \ldots, F^{-1}(u_d|\theta)|\theta),
 \end{equation}
 где $F(x)$ кумулятивная функция маргинального распределения, $F^{-1}(p)$ -- обратная функция распределения, $F_d(x_1,\dots,x_d)$ -- кумулятивная функция $d$-мерного совместного распределения, $\theta$ -- вектор параметров.
 
 \item $d$-мерная копула $C$ называется \textit{архимедовой}, если функция её распределения удовлетворяет уравнению:
+%
 \begin{equation} \label{ArchCop}
-    C(u_1,u_2,\ldots,u_d|\theta) = \psi^{[-1]}(\psi(u_1|\theta)+\psi(u_2|\theta) + \ldots + \psi(u_d|\theta) | \theta ),
+    C_\psi(\textbf{u}|\theta) = \psi\Big(\sum_{i=1}^d \psi^{-1}(u_i|\theta) \Big), \ \ \textbf{u} \in [0, 1]^d,
 \end{equation}
-где $\psi$: $[0,1] \rightarrow [0, \infty]$ -- непрерывная строго убывающая выпуклая функция такая, что $\psi(1)=0$, также называемая \textit{функцией-генератором}, а $\psi^{[-1]}(p)$ -- псевдо-обратная функция, определяемая из уравнения:
-$$\psi^{[-1]}(p) = \left\{ \begin{aligned}
-    & \psi^{-1}(p),    & \ 0 \le p & \le \psi(0), \\
-    & 0,                  & \ \psi(0) \le p & \le \infty.
+%
+\noindent или для двумерного случая
+%
+\begin{equation}
+    C_\psi(u, v|\theta) = \xi^{[-1]}(\xi(u|\theta)+\xi(v|\theta)),
+\end{equation}
+%
+где $\xi$: $[0,1] \rightarrow [0, \infty]$ -- непрерывная строго убывающая выпуклая функция такая, что $\xi(0)=\infty$, $\xi(1)=0$, также называемая \textit{функцией-генератором}, а $\xi^{[-1]}(p)$ -- псевдо-обратная функция, определяемая из уравнения:
+$$\xi^{[-1]}(p) = \left\{ \begin{aligned}
+    & \xi^{-1}(p), & \ 0 \le p & \le \xi(0), \\
+    & 0,           & \ \xi(0) \le p & \le \infty.
 \end{aligned} \right.$$
 \end{enumerate}
 
@@ -167,15 +175,8 @@ C_{t}(u_1,u_2,\ldots,u_d|\rho, \nu) = t_d \left( t^{-1} (u_1|\nu), t^{-1} (u_2|\
 Для вайн копул допустимо использование нецелых значений степеней свободы у копул с двумя параметрами. 
 К тому же мы используем разные семейства распределений для каждой парной копулы \cite{Bel2010}.
 
-Рассмотрим наиболее распространённые семейства парных копул. 
-Для начала приведём общую формулу, преобразовав уравнение~(\ref{EllipCop}) для двумерного случая:
+Рассмотрим двумерные функции наиболее распространённых семейств архимедовых копул \cite{Joe1997}. Учтём следующие формулы для приведения функции двумерной копулы к её <<повёрнутой версии>> \cite{Brechmann2013}:
 %
-\begin{equation} \label{BiArch}
-    C(u,v|\theta,\delta) = \varphi (\varphi^{-1}(u|\theta,\delta) + \varphi^{-1}(v|\theta,\delta)|\theta,\delta).
-\end{equation}
-
-В \cite{Brechmann2013} можно также найти общие формулы для приведения функции двумерной копулы к её <<повёрнутой версии>>:
-
 \begin{equation} \label{rotatedCop}
 \begin{aligned}
     C_{90}(u,v) &= v - C(1 - u, v), \\
@@ -184,11 +185,9 @@ C_{t}(u_1,u_2,\ldots,u_d|\rho, \nu) = t_d \left( t^{-1} (u_1|\nu), t^{-1} (u_2|\
 \end{aligned}
 \end{equation}
 
-Теперь кратко рассмотрим некоторые из семейств двумерных копул, описанных в монографии Г.~Джо \cite{Joe1997}.
-
 \begin{enumerate}
 \item \textbf{Копула Клейтона}.\\
-Рассмотрим ур.~(\ref{BiArch}) при $0 \le u,v,t \le 1$ и $\delta \ge 0$, где
+Рассмотрим ур.~(\ref{ArchCop}) при $0 \le u,v,t \le 1$ и $\delta \ge 0$, где
 \begin{equation}
 \begin{aligned}
     \varphi (s) = \varphi(s| \delta) &= (1 + s \delta)^{-1/\delta}, \\ 
@@ -202,7 +201,7 @@ C_{t}(u_1,u_2,\ldots,u_d|\rho, \nu) = t_d \left( t^{-1} (u_1|\nu), t^{-1} (u_2|\
 Ур.~(\ref{rotatedCop}) преобразует копулу Клейтона в т.~н. <<Survival>> копулу Клейтона (копула Клетона, повёрнутая на 180º).
 
 \item \textbf{Копула Гумбеля}.\\
-Рассмотрим ур.~(\ref{BiArch}) при $0 \le u,v,t \le 1$ и $\delta \ge 1$, где
+Рассмотрим ур.~(\ref{ArchCop}) при $0 \le u,v,t \le 1$ и $\delta \ge 1$, где
 \begin{equation}
 \begin{aligned}
     \varphi (s) = \varphi(s| \delta) &= \exp{\{-s^{1/\delta}\}}, \\ 
@@ -216,7 +215,7 @@ C_{t}(u_1,u_2,\ldots,u_d|\rho, \nu) = t_d \left( t^{-1} (u_1|\nu), t^{-1} (u_2|\
 Ур.~(\ref{rotatedCop}) преобразует копулу Гумбеля в т.~н. <<Survival>> копулу Гумбеля (копула Гумбеля, повёрнутая на 180º). 
 
 \item \textbf{Копула Клейтона-Гумбеля (BB1)}.\\
-Рассмотрим ур.~(\ref{BiArch}) при $0 \le u,v,t \le 1$, $\theta > 0$ и $\delta \ge 1$, где
+Рассмотрим ур.~(\ref{ArchCop}) при $0 \le u,v,t \le 1$, $\theta > 0$ и $\delta \ge 1$, где
 \begin{equation}
 \begin{aligned}
     \varphi (s) = \varphi(s| \theta, \delta) &= (1 + s^{1/\delta})^{-1/\theta}, \\ 
@@ -230,7 +229,7 @@ C_{t}(u_1,u_2,\ldots,u_d|\rho, \nu) = t_d \left( t^{-1} (u_1|\nu), t^{-1} (u_2|\
 Ур.~(\ref{rotatedCop}) преобразует BB1 копулу в т.~н. <<Survival>> копулу Клейтона-Гумбеля (BB1 копула, повёрнутая на 180º).
 
 % \item \textbf{Копула Джо-Клейтона (BB7)}.\\
-% Рассмотрим ур.~(\ref{BiArch}) при $0 \le u,v,t \le 1$, $\theta \ge 1$ и $\delta > 0$, где
+% Рассмотрим ур.~(\ref{ArchCop}) при $0 \le u,v,t \le 1$, $\theta \ge 1$ и $\delta > 0$, где
 % \begin{equation}
 % \begin{aligned}
 %     \varphi (s) = \varphi(s| \theta, \delta) &= 1-[1-(1+s)^{-1/\delta}]^{1/\theta}, \\
@@ -243,7 +242,7 @@ C_{t}(u_1,u_2,\ldots,u_d|\rho, \nu) = t_d \left( t^{-1} (u_1|\nu), t^{-1} (u_2|\
 %     \end{equation}
 
 \item \textbf{Копула Франка}.\\
-Рассмотрим ур.~(\ref{BiArch}) при $0 \le u,v,t \le 1$, $\theta \ge 1$ и $-\infty < \delta < \infty$, где
+Рассмотрим ур.~(\ref{ArchCop}) при $0 \le u,v,t \le 1$, $\theta \ge 1$ и $-\infty < \delta < \infty$, где
 \begin{equation}
 \begin{aligned}
     \varphi (s) = \varphi(s| \delta) &= -\delta^{-1}\log{[1-(1-e^{-\delta})e^{-s}]}, \\
